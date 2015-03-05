@@ -20,7 +20,7 @@ class PixFieldsPlugin {
 	 * @since   1.0.0
 	 * @const   string
 	 */
-	protected $version = '0.5.2';
+	protected $version = '0.5.3';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -491,7 +491,13 @@ class PixFieldsPlugin {
 					// if we don't have a meta key this means this is a new field
 					// so we ensure there isn't already a meta_key with the same value
 					if ( ! isset( $field['meta_key'] ) ) {
-						$meta_key = sanitize_title_with_dashes( $field['label'] );
+						$meta_key = $field['label']; // old way sanitize_title_with_dashes( $field['label'] );
+
+						// try to sanitize a little
+						$meta_key = strip_tags($meta_key);
+						$meta_key = strtolower($meta_key);
+						$meta_key = preg_replace('/&.+?;/', '', $meta_key); // kill entities
+						$meta_key = str_replace(array(' ', '.', '!', '?', ',', ':' ), '-', $meta_key);
 
 						// but if it is we make it unique with a timestamp suffix
 						if ( in_array($meta_key, $unique_meta_keys) ) {
@@ -636,8 +642,8 @@ class PixFieldsPlugin {
 			}
 		}
 
-		$r = array_filter( $r );
 		if ( !empty($r) ) {
+			$r = array_filter( $r );
 			return array_combine($r, $r);
 		}
 		return false;
