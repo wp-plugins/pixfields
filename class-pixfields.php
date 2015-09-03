@@ -20,7 +20,7 @@ class PixFieldsPlugin {
 	 * @since   1.0.0
 	 * @const   string
 	 */
-	protected $version = '0.6.1';
+	protected $version = '0.6.2';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -29,7 +29,7 @@ class PixFieldsPlugin {
 	 * @since    1.0.0
 	 * @var      string
 	 */
-	protected $plugin_slug = 'pixfields_txtd';
+	protected $plugin_slug = 'pixfields';
 
 	/**
 	 * Instance of this class.
@@ -101,7 +101,8 @@ class PixFieldsPlugin {
 		add_action( 'add_meta_boxes', array( $this, 'add_pixfields_meta_box' ) );
 //		add_action( 'save_post', array( $this, 'pixfields_save_modal_data' ) );
 
-		add_filter( 'icl_wpml_config_array', array( $this, 'add_fields_to_the_wpml_options' ), 1 );
+		//@deprecated
+		//add_filter( 'icl_wpml_config_array', array( $this, 'add_fields_to_the_wpml_options' ), 1 );
 
 		// a little hook into the_content
 		add_filter( 'the_content', array( $this, 'hook_into_the_content' ), 10, 1 );
@@ -634,6 +635,12 @@ class PixFieldsPlugin {
 		return self::$fields_list;
 	}
 
+	/**
+	 * @param $options
+	 *
+	 * @return mixed
+	 * @deprecated
+	 */
 	// inform WPML about PixField's labels and pass them as admin-texts
 	function  add_fields_to_the_wpml_options( $options ) {
 
